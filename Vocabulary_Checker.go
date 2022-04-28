@@ -8,11 +8,19 @@ import (
 	"strings"
 )
 
+//program reads name of the txt_file from input
+//inside this file, every word marks like a «bad word»
+//then when you type anything to CLI it would output same sentence
+//with censored words.
+
+//program can't read punctuation
+
 func main() {
+	fmt.Print("Enter name of the file without filename extension\n- ")
 	var file_name string
 	fmt.Scanln(&file_name)
 
-	file, err := os.Open(file_name)
+	file, err := os.Open(file_name + ".txt")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -30,7 +38,8 @@ func main() {
 	input_words := make([]string, 0)
 	word_scanner := bufio.NewScanner(os.Stdin)
 
-	for true {
+	for {
+		fmt.Print("\nCheck sentence for bad words: ")
 		word_scanner.Scan()
 		line := word_scanner.Text()
 		for _, words := range strings.Fields(line) {
@@ -45,11 +54,14 @@ func main() {
 			fmt.Println("Bye!")
 			break
 		}
+		var s string
 		for _, value := range input_words {
-			fmt.Printf("%s ", value)
+			s += value + " "
 
 		}
-		fmt.Println()
+
+		fmt.Printf("\nSentence after censorship: %s\n", s)
+
 		input_words = nil
 	}
 }
